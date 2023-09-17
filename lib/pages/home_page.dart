@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../screens/settings_screen.dart';
+// import '../screens/settings_screen.dart';
+import './notes/notes_page.dart';
+import './auth_page.dart';
+import './settings_page.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  static const routeName = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,23 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             ListTile(
+              title: const Text('Notes'),
+              leading: const Icon(Icons.sticky_note_2_sharp),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (ctx) => const NotesPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Task Timer'),
+              leading: const Icon(Icons.timer_rounded),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text('My Account'),
               leading: const Icon(Icons.person),
               onTap: () {
@@ -46,10 +68,16 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.restorablePushNamed(context, SettingsPage.routeName);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.login),
+              title: const Text('Login'),
+              onTap: () {
+                Navigator.pop(context);
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => const SettingsScreen(),
-                  ),
+                  MaterialPageRoute(builder: (ctx) => const AuthPage()),
                 );
               },
             ),

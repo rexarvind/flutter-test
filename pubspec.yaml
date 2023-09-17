@@ -9,6 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.1.0
+  shared_preferences: ^2.2.1
+  flutter_riverpod: ^2.4.0
+  flutter_secure_storage: ^9.0.0
+  platform_device_id: ^1.0.1
 
 dev_dependencies:
   flutter_test:
