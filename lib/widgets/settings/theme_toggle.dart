@@ -1,95 +1,61 @@
+import 'package:demo_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ThemeToggle extends StatefulWidget {
+class ThemeToggle extends ConsumerStatefulWidget {
   const ThemeToggle({super.key});
 
   @override
-  State<ThemeToggle> createState() => _ThemeToggleState();
+  ConsumerState<ThemeToggle> createState() => _ThemeToggleState();
 }
 
-class _ThemeToggleState extends State<ThemeToggle> {
-  String _selectedTheme = 'system';
-  final String _themeKey = 'theme_key';
-
-  _loadSelectedTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String savedTheme = prefs.getString(_themeKey) ?? 'system';
-    setState(() {
-      _selectedTheme = savedTheme;
-    });
-  }
-
-  void _savedTheme(String theme) {
-    setState(() {
-      _selectedTheme = theme;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSelectedTheme();
-  }
-
+class _ThemeToggleState extends ConsumerState<ThemeToggle> {
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = ref.watch(themeProvider);
+    String theme = 'system';
+    if (themeMode == ThemeMode.light) {
+      theme = 'light';
+    } else if (themeMode == ThemeMode.dark) {
+      theme = 'dark';
+    } else {
+      theme = 'system';
+    }
     return ListTile(
       leading: const Icon(Icons.brightness_6),
       title: const Text('Theme'),
-      subtitle:
-          Text(_selectedTheme[0].toUpperCase() + _selectedTheme.substring(1)),
+      subtitle: Text(theme[0].toUpperCase() + theme.substring(1)),
       onTap: () {
         showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
-              return ThemeToggleSheet(
-                themeKey: _themeKey,
-                currentTheme: _selectedTheme,
-                savedTheme: _savedTheme,
-              );
+              return const ThemeToggleSheet();
             });
       },
     );
   }
 }
 
-class ThemeToggleSheet extends StatefulWidget {
-  const ThemeToggleSheet(
-      {super.key, required this.themeKey, required this.currentTheme, required this.savedTheme});
-
-  final String themeKey;
-  final String currentTheme;
-  final Function savedTheme;
+class ThemeToggleSheet extends ConsumerStatefulWidget {
+  const ThemeToggleSheet({super.key});
 
   @override
-  State<ThemeToggleSheet> createState() => _ThemeToggleSheetState();
+  ConsumerState<ThemeToggleSheet> createState() => _ThemeToggleSheetState();
 }
 
-class _ThemeToggleSheetState extends State<ThemeToggleSheet> {
-  String get themeKey => widget.themeKey;
-  String _selectedTheme = 'system';
-
-  _changeTheme(String theme) {
-    setState(() {
-      _selectedTheme = theme;
-    });
-  }
-
-  _saveSelectedTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(themeKey, _selectedTheme);
-    widget.savedTheme(_selectedTheme);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedTheme = widget.currentTheme;
-  }
+class _ThemeToggleSheetState extends ConsumerState<ThemeToggleSheet> {
+  String selectedTheme = 'system';
 
   @override
   Widget build(BuildContext context) {
+    ThemeMode themeMode = ref.read(themeProvider);
+    if (themeMode == ThemeMode.light) {
+      selectedTheme = 'light';
+    } else if (themeMode == ThemeMode.dark) {
+      selectedTheme = 'dark';
+    } else {
+      selectedTheme = 'system';
+    }
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -100,48 +66,63 @@ class _ThemeToggleSheetState extends State<ThemeToggleSheet> {
           RadioListTile(
             value: 'system',
             title: const Text('System'),
-            groupValue: _selectedTheme,
+            groupValue: selectedTheme,
             onChanged: (value) {
-              _changeTheme(value ?? 'system');
+              setState(() {
+                selectedTheme = ref
+                    .watch(themeProvider.notifier)
+                    .changeTheme(value ?? 'system');
+              });
+              Navigator.pop(context);
             },
           ),
           RadioListTile(
             value: 'light',
             title: const Text('Light'),
-            groupValue: _selectedTheme,
+            groupValue: selectedTheme,
             onChanged: (value) {
-              _changeTheme(value ?? 'light');
+              setState(() {
+                selectedTheme = ref
+                    .watch(themeProvider.notifier)
+                    .changeTheme(value ?? 'light');
+              });
+              Navigator.pop(context);
             },
           ),
           RadioListTile(
             value: 'dark',
             title: const Text('Dark'),
-            groupValue: _selectedTheme,
+            groupValue: selectedTheme,
             onChanged: (value) {
-              _changeTheme(value ?? 'dark');
+              setState(() {
+                selectedTheme = ref
+                    .watch(themeProvider.notifier)
+                    .changeTheme(value ?? 'dark');
+              });
+              Navigator.pop(context);
             },
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              const SizedBox(width: 8),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _saveSelectedTheme();
-                },
-                child: const Text('Save'),
-              ),
-              const SizedBox(width: 20),
-            ],
-          ),
+          // const SizedBox(height: 4),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     TextButton(
+          //       onPressed: () {
+          //         Navigator.pop(context);
+          //       },
+          //       child: const Text('Cancel'),
+          //     ),
+          //     const SizedBox(width: 8),
+          //     TextButton(
+          //       onPressed: () {
+          //         Navigator.pop(context);
+          //         ref.watch(themeProvider.notifier).changeTheme(selectedTheme);
+          //       },
+          //       child: const Text('Save'),
+          //     ),
+          //     const SizedBox(width: 20),
+          //   ],
+          // ),
           const SizedBox(height: 20),
         ],
       ),

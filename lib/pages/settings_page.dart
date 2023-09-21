@@ -4,7 +4,6 @@ import '../widgets/settings/theme_toggle.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
-
   static const routeName = '/settings';
 
   @override

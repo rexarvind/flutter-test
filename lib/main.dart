@@ -1,52 +1,32 @@
+import 'package:demo_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import './pages/home_page.dart';
 import './pages/settings_page.dart';
 // import './auth_service.dart';
 
 // AuthService authService = AuthService();
-const kThemeKey = 'theme_key';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String theme = prefs.getString(kThemeKey) ?? 'system';
-
   runApp(
-    ProviderScope(
-      child: MainApp(theme: theme,),
+    const ProviderScope(
+      child: MainApp(),
     ),
   );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key, required this.theme});
-  final String theme;
+class MainApp extends ConsumerWidget {
+  const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    ThemeMode getSavedTheme() {
-      if(theme == 'dark'){
-        return ThemeMode.dark;
-      } else if(theme == 'light'){
-        return ThemeMode.light;
-      } else {
-        return ThemeMode.system;
-      }
-    }
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    ThemeMode themeMode = ref.watch(themeProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: getSavedTheme(),
-      theme: ThemeData(
-        useMaterial3: true,
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
+      themeMode: themeMode,
+      theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
       home: const HomePage(),
       onGenerateRoute: (RouteSettings routeSettings) {
