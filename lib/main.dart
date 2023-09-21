@@ -1,12 +1,11 @@
-import 'package:demo_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import './providers/theme_provider.dart';
+
 import './pages/home_page.dart';
 import './pages/settings_page.dart';
-// import './auth_service.dart';
-
-// AuthService authService = AuthService();
+import './notes/notes_home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +35,8 @@ class MainApp extends ConsumerWidget {
               switch (routeSettings.name) {
                 case SettingsPage.routeName:
                   return const SettingsPage();
+                case NotesHomePage.routeName:
+                  return const NotesHomePage();
                 default:
                   return const HomePage();
               }

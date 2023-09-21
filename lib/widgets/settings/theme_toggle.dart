@@ -68,12 +68,12 @@ class _ThemeToggleSheetState extends ConsumerState<ThemeToggleSheet> {
             title: const Text('System'),
             groupValue: selectedTheme,
             onChanged: (value) {
+              Navigator.pop(context);
               setState(() {
                 selectedTheme = ref
                     .watch(themeProvider.notifier)
                     .changeTheme(value ?? 'system');
               });
-              Navigator.pop(context);
             },
           ),
           RadioListTile(
@@ -81,12 +81,12 @@ class _ThemeToggleSheetState extends ConsumerState<ThemeToggleSheet> {
             title: const Text('Light'),
             groupValue: selectedTheme,
             onChanged: (value) {
+              Navigator.pop(context);
               setState(() {
                 selectedTheme = ref
                     .watch(themeProvider.notifier)
                     .changeTheme(value ?? 'light');
               });
-              Navigator.pop(context);
             },
           ),
           RadioListTile(
@@ -94,12 +94,12 @@ class _ThemeToggleSheetState extends ConsumerState<ThemeToggleSheet> {
             title: const Text('Dark'),
             groupValue: selectedTheme,
             onChanged: (value) {
+              Navigator.pop(context);
               setState(() {
                 selectedTheme = ref
                     .watch(themeProvider.notifier)
                     .changeTheme(value ?? 'dark');
               });
-              Navigator.pop(context);
             },
           ),
           // const SizedBox(height: 4),

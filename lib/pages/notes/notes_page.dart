@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'notes_single_page.dart';
+import '../../notes/notes_single_page.dart';
 
 class NotesPage extends StatelessWidget {
   const NotesPage({super.key});

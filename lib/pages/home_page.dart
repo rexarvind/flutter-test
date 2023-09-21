@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './notes/notes_page.dart';
 import './auth_page.dart';
 import './settings_page.dart';
+import '../notes/notes_home_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -47,6 +48,14 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (ctx) => const NotesPage()),
                 );
+              },
+            ),
+            ListTile(
+              title: const Text('Notes 2'),
+              leading: const Icon(Icons.sticky_note_2_sharp),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.restorablePushNamed(context, NotesHomePage.routeName);
               },
             ),
             ListTile(
