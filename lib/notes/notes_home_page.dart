@@ -21,31 +21,149 @@ class NotesHomePage extends ConsumerStatefulWidget {
   ConsumerState<NotesHomePage> createState() => _NotesHomePageState();
 }
 
-class _NotesHomePageState extends ConsumerState<NotesHomePage> {
+class _NotesHomePageState extends ConsumerState<NotesHomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   List<Note> _notes = [
-          Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
-      Note(title: 'asdf', content: 'alsj', isTagged: false, isFavorite: false, isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
+    Note(
+        title: 'asdf',
+        content: 'alsj',
+        isTagged: false,
+        isFavorite: false,
+        isDeleted: true),
   ];
   var _isLoading = false;
   String? _error;
@@ -93,47 +211,79 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage> {
     }
   }
 
+  Future<void> _pullRefresh() async {
+    return Future<void>.delayed(const Duration(seconds: 5));
+  }
+
+  final SliverOverlapAbsorberHandle appBar = SliverOverlapAbsorberHandle();
+  final SliverOverlapAbsorberHandle disconnectBar =
+      SliverOverlapAbsorberHandle();
+
+  @override
+  void initState() {
+    _tabController = TabController(
+      initialIndex: 1,
+      length: 3,
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Notes'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Notes'),
-              Tab(text: 'Favorites'),
-              Tab(text: 'Deleted'),
-            ],
-          ),
-        ),
+    return Scaffold(
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: const Text('Notes'),
+              pinned: true,
+              floating: true,
+              bottom: TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: 'Notes'),
+                  Tab(text: 'Favorites'),
+                  Tab(text: 'Deleted'),
+                ],
+              ),
+            ),
+          ];
+        },
         body: TabBarView(
+          controller: _tabController,
           children: [
-            Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: _notes.length,
-                      itemBuilder: (ctx, index) {
-                        return const NotesListItem();
-                      }),
-                )
-              ],
+            RefreshIndicator(
+              onRefresh: _pullRefresh,
+              triggerMode: RefreshIndicatorTriggerMode.anywhere,
+              child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: _notes.length,
+                  itemBuilder: (ctx, index) {
+                    return const NotesListItem();
+                  }),
             ),
             const Text('notes'),
             const Text('notes'),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Create New Note',
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (ctx) => const NotesEditPage()),
-            );
-          },
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Create New Note',
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (ctx) => const NotesEditPage()),
+          );
+        },
       ),
     );
   }

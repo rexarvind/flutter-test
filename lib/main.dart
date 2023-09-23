@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import './providers/theme_provider.dart';
@@ -16,6 +17,15 @@ void main() async {
   );
 }
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => { 
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.trackpad,
+  };
+}
+
 class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
@@ -27,6 +37,7 @@ class MainApp extends ConsumerWidget {
       themeMode: themeMode,
       theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
+      scrollBehavior: MyCustomScrollBehavior(),
       home: const HomePage(),
       onGenerateRoute: (RouteSettings routeSettings) {
         return MaterialPageRoute<void>(
