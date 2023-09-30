@@ -85,9 +85,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Login'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (ctx) => const AuthPage()),
-                );
+                Navigator.restorablePushNamed(context, AuthPage.routeName);
               },
             ),
             ListTile(

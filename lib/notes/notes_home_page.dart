@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import './notes_single_page.dart';
 import './notes_model.dart';
 import './notes_list_item.dart';
+import '../pages/settings_page.dart';
 
 class NotesHomePage extends ConsumerStatefulWidget {
   const NotesHomePage({super.key});
@@ -243,17 +244,34 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
         physics: const ClampingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-              title: const Text('Notes'),
-              pinned: true,
-              floating: true,
-              bottom: TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(text: 'Notes'),
-                  Tab(text: 'Favorites'),
-                  Tab(text: 'Deleted'),
-                ],
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverSafeArea(
+                sliver: SliverAppBar(
+                  title: const Text('Duly Noted'),
+                  pinned: true,
+                  floating: true,
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.restorablePushNamed(
+                              context, SettingsPage.routeName);
+                        },
+                        icon: const Icon(Icons.settings)),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.more_vert),
+                    )
+                  ],
+                  bottom: TabBar(
+                    controller: _tabController,
+                    tabs: const [
+                      Tab(text: 'Notes'),
+                      Tab(text: 'Favorites'),
+                      Tab(text: 'Deleted'),
+                    ],
+                  ),
+                ),
               ),
             ),
           ];

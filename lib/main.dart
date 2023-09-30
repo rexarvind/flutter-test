@@ -7,6 +7,7 @@ import './providers/theme_provider.dart';
 import './pages/home_page.dart';
 import './pages/settings_page.dart';
 import './notes/notes_home_page.dart';
+import './pages/auth_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +49,8 @@ class MainApp extends ConsumerWidget {
                   return const SettingsPage();
                 case NotesHomePage.routeName:
                   return const NotesHomePage();
+                case AuthPage.routeName:
+                  return const AuthPage();
                 default:
                   return const HomePage();
               }
