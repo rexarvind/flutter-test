@@ -253,17 +253,41 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
                   floating: true,
                   actions: [
                     IconButton(
-                        onPressed: () {
-                          Navigator.restorablePushNamed(
-                              context, SettingsPage.routeName);
-                        },
-                        icon: const Icon(Icons.settings)),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_vert),
-                    )
+                      tooltip: 'Settings',
+                      onPressed: () {
+                        Navigator.restorablePushNamed(
+                            context, SettingsPage.routeName);
+                      },
+                      icon: const Icon(Icons.settings),
+                    ),
+                    MenuAnchor(
+                      builder: (BuildContext context, MenuController controller,
+                          Widget? child) {
+                        return IconButton(
+                          onPressed: () {
+                            if (controller.isOpen) {
+                              controller.close();
+                            } else {
+                              controller.open();
+                            }
+                          },
+                          icon: const Icon(Icons.more_vert),
+                          tooltip: 'Menu',
+                        );
+                      },
+                      menuChildren: List<MenuItemButton>.generate(
+                        3,
+                        (int index) => MenuItemButton(
+                          onPressed: () {
+                            // setState(() => selectedMenu = SampleItem.values[index]),
+                          },
+                          child: const Text('Item 1'),
+                        ),
+                      ),
+                    ),
                   ],
                   bottom: TabBar(
+                    isScrollable: false,
                     controller: _tabController,
                     tabs: const [
                       Tab(text: 'Notes'),
