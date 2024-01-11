@@ -1,8 +1,12 @@
+import 'package:demo_app/models/api_response.dart';
+import 'package:demo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../notes/notes_home_page.dart';
 import '../providers/auth_provider.dart';
 import '../pages/settings_page.dart';
+import '../constants.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -14,11 +18,14 @@ class AuthPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Duly Noted'),
+          title: const Text('Duly Noted $kVersion'),
           actions: [
-            IconButton(onPressed: (){
-              Navigator.restorablePushNamed(context, SettingsPage.routeName);
-            }, icon: const Icon(Icons.settings)),
+            IconButton(
+                onPressed: () {
+                  Navigator.restorablePushNamed(
+                      context, SettingsPage.routeName);
+                },
+                icon: const Icon(Icons.settings)),
             IconButton(
               onPressed: () {},
               icon: const Icon(Icons.more_vert),
@@ -161,6 +168,36 @@ class AuthLoginForm extends ConsumerStatefulWidget {
 class _AuthLoginFormState extends ConsumerState<AuthLoginForm> {
   final _formKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
+  bool _isLoading = false;
+
+  var username = '';
+  String password = '';
+
+  Future<void> _login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      ApiResponse response = await login(username, password);
+      setState(() {
+        _isLoading = false;
+      });
+      if (response.error == null) {
+        if (!context.mounted) return;
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const NotesHomePage(),
+          ),
+          (route) => false,
+        );
+      } else {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${response.error}')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,6 +214,9 @@ class _AuthLoginFormState extends ConsumerState<AuthLoginForm> {
               if (value == null || value.isEmpty || value.trim().length <= 1) {
                 return 'Please fill valid username or email.';
               }
+              setState(() {
+                username = value;
+              });
               return null;
             },
           ),
@@ -200,20 +240,25 @@ class _AuthLoginFormState extends ConsumerState<AuthLoginForm> {
               if (value == null || value.isEmpty || value.trim().length <= 1) {
                 return 'Password is required';
               }
+              setState(() {
+                password = value;
+              });
               return null;
             },
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: _isLoading ? null : _login,
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
+              minimumSize: const Size.fromHeight(54),
               elevation: 4,
             ),
-            child: const Text(
-              'Login',
-              style: TextStyle(fontSize: 18),
-            ),
+            child: _isLoading
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 18),
+                  ),
           ),
         ],
       ),

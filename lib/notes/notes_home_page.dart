@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:demo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
+import '../pages/auth_page.dart';
 import './notes_single_page.dart';
 import './notes_model.dart';
 import './notes_list_item.dart';
 import '../pages/settings_page.dart';
+import '../constants.dart';
 
 class NotesHomePage extends ConsumerStatefulWidget {
   const NotesHomePage({super.key});
@@ -248,10 +251,24 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverSafeArea(
                 sliver: SliverAppBar(
-                  title: const Text('Duly Noted'),
+                  title: const Text('Duly Noted $kVersion'),
                   pinned: true,
                   floating: true,
                   actions: [
+                    IconButton(
+                      onPressed: () {
+                        logout().then((_) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  const AuthPage(),
+                            ),
+                            (route) => false,
+                          );
+                        });
+                      },
+                      icon: const Icon(Icons.logout),
+                    ),
                     IconButton(
                       tooltip: 'Settings',
                       onPressed: () {

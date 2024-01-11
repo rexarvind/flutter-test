@@ -1,3 +1,4 @@
+import 'package:demo_app/pages/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +42,7 @@ class MainApp extends ConsumerWidget {
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
       scrollBehavior: MyCustomScrollBehavior(),
-      home: const HomePage(),
+      home: const NotesHomePage(),
       onGenerateRoute: (RouteSettings routeSettings) {
         return MaterialPageRoute<void>(
             settings: routeSettings,
@@ -50,13 +51,17 @@ class MainApp extends ConsumerWidget {
                 case SettingsPage.routeName:
                   return const SettingsPage();
                 case NotesHomePage.routeName:
+                  // return const Loading();
                   return const NotesHomePage();
                 case AuthPage.routeName:
                   return const AuthPage();
                 default:
+                  // return const Loading();
+                  // return const NotesHomePage();
                   return const HomePage();
               }
-            });
+            },
+        );
       },
     );
   }
