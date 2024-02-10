@@ -4,6 +4,7 @@ import 'package:demo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../pages/auth_page.dart';
 import './notes_single_page.dart';
@@ -28,6 +29,7 @@ class NotesHomePage extends ConsumerStatefulWidget {
 class _NotesHomePageState extends ConsumerState<NotesHomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String? pushNotificationToken;
 
   List<Note> _notes = [
     Note(
@@ -169,21 +171,21 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
         isFavorite: false,
         isDeleted: true),
   ];
-  var _isLoading = false;
-  String? _error;
+  // var _isLoading = false;
+  // String? _error;
 
   void _loadItems() async {
     final url = Uri.https('rexarvind.firebaseio.com', 'shopping-list.json');
     try {
       final response = await http.get(url);
       if (response.statusCode >= 400) {
-        setState(() {
-          _error = 'Failed to fetch data.';
-        });
+        // setState(() {
+          // _error = 'Failed to fetch data.';
+        // });
       }
       if (response.body == 'null') {
         setState(() {
-          _isLoading = false;
+          // _isLoading = false;
         });
         return;
       }
@@ -206,12 +208,12 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
       // }
       setState(() {
         _notes = loadedItems;
-        _isLoading = false;
+        // _isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        _error = 'Something went wrong, try again later.';
-      });
+      // setState(() {
+        // _error = 'Something went wrong, try again later.';
+      // });
     }
   }
 
@@ -223,6 +225,28 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
   final SliverOverlapAbsorberHandle disconnectBar =
       SliverOverlapAbsorberHandle();
 
+  void setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+    final token = await fcm.getToken();
+    setState(() {
+      pushNotificationToken = token;
+    });
+    final res = await http.post(
+      Uri.https(kApiBase, '/notifications/'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(
+        {
+          'token': token,
+          'deviceId': 'web',
+        },
+      ),
+    );
+    print(res);
+  }
+
   @override
   void initState() {
     _tabController = TabController(
@@ -231,6 +255,7 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
       vsync: this,
     );
     super.initState();
+    setupPushNotifications();
   }
 
   @override
@@ -241,108 +266,113 @@ class _NotesHomePageState extends ConsumerState<NotesHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverSafeArea(
-                sliver: SliverAppBar(
-                  title: const Text('Duly Noted $kVersion'),
-                  pinned: true,
-                  floating: true,
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        logout().then((_) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const AuthPage(),
-                            ),
-                            (route) => false,
+    return SafeArea(
+      child: Scaffold(
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverSafeArea(
+                  sliver: SliverAppBar(
+                    title: const Text('Duly Noted $kVersion'),
+                    pinned: true,
+                    floating: true,
+                    actions: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.restorablePushNamed(
+                            context, AuthPage.routeName);
+                          // logout().then((_) {
+                            // Navigator.of(context).pushAndRemoveUntil(
+                            //   MaterialPageRoute(
+                            //     builder: (BuildContext context) =>
+                            //         const AuthPage(),
+                            //   ),
+                            //   (route) => false,
+                            // );
+      
+                          // });
+                        },
+                        icon: const Icon(Icons.logout),
+                      ),
+                      IconButton(
+                        tooltip: 'Settings',
+                        onPressed: () {
+                          Navigator.restorablePushNamed(
+                              context, SettingsPage.routeName);
+                        },
+                        icon: const Icon(Icons.settings),
+                      ),
+                      MenuAnchor(
+                        builder: (BuildContext context, MenuController controller,
+                            Widget? child) {
+                          return IconButton(
+                            onPressed: () {
+                              if (controller.isOpen) {
+                                controller.close();
+                              } else {
+                                controller.open();
+                              }
+                            },
+                            icon: const Icon(Icons.more_vert),
+                            tooltip: 'Menu',
                           );
-                        });
-                      },
-                      icon: const Icon(Icons.logout),
-                    ),
-                    IconButton(
-                      tooltip: 'Settings',
-                      onPressed: () {
-                        Navigator.restorablePushNamed(
-                            context, SettingsPage.routeName);
-                      },
-                      icon: const Icon(Icons.settings),
-                    ),
-                    MenuAnchor(
-                      builder: (BuildContext context, MenuController controller,
-                          Widget? child) {
-                        return IconButton(
-                          onPressed: () {
-                            if (controller.isOpen) {
-                              controller.close();
-                            } else {
-                              controller.open();
-                            }
-                          },
-                          icon: const Icon(Icons.more_vert),
-                          tooltip: 'Menu',
-                        );
-                      },
-                      menuChildren: List<MenuItemButton>.generate(
-                        3,
-                        (int index) => MenuItemButton(
-                          onPressed: () {
-                            // setState(() => selectedMenu = SampleItem.values[index]),
-                          },
-                          child: const Text('Item 1'),
+                        },
+                        menuChildren: List<MenuItemButton>.generate(
+                          3,
+                          (int index) => MenuItemButton(
+                            onPressed: () {
+                              // setState(() => selectedMenu = SampleItem.values[index]),
+                            },
+                            child: const Text('Item 1'),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                  bottom: TabBar(
-                    isScrollable: false,
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(text: 'Notes'),
-                      Tab(text: 'Favorites'),
-                      Tab(text: 'Deleted'),
                     ],
+                    bottom: TabBar(
+                      isScrollable: false,
+                      controller: _tabController,
+                      tabs: const [
+                        Tab(text: 'Notes'),
+                        Tab(text: 'Favorites'),
+                        Tab(text: 'Deleted'),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ];
-        },
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            RefreshIndicator(
-              onRefresh: _pullRefresh,
-              triggerMode: RefreshIndicatorTriggerMode.anywhere,
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: _notes.length,
-                  itemBuilder: (ctx, index) {
-                    return const NotesListItem();
-                  }),
-            ),
-            const Text('notes'),
-            const Text('notes'),
-          ],
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              RefreshIndicator(
+                onRefresh: _pullRefresh,
+                triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: _notes.length,
+                    itemBuilder: (ctx, index) {
+                      return const NotesListItem();
+                    }),
+              ),
+              Text('Token $pushNotificationToken'),
+              const Text('notes'),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Create New Note',
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => const NotesEditPage()),
-          );
-        },
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Create New Note',
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => const NotesEditPage()),
+            );
+          },
+        ),
       ),
     );
   }

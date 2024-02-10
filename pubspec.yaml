@@ -9,11 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  dio: ^5.4.0
+
   http: ^1.1.0
   shared_preferences: ^2.2.1
   flutter_riverpod: ^2.4.0
   flutter_secure_storage: ^9.0.0
-  platform_device_id: ^1.0.1
+  platform_device_id_v3: ^1.0.0
+  firebase_messaging: ^14.7.15
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:

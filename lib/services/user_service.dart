@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:platform_device_id/platform_device_id.dart';
+import 'package:platform_device_id_v3/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';

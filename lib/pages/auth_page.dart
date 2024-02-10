@@ -1,8 +1,10 @@
-import 'package:demo_app/models/api_response.dart';
-import 'package:demo_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../api/google_signin_api.dart';
+import '../models/api_response.dart';
+import '../pages/account_page.dart';
+import '../services/user_service.dart';
 import '../notes/notes_home_page.dart';
 import '../providers/auth_provider.dart';
 import '../pages/settings_page.dart';
@@ -173,6 +175,28 @@ class _AuthLoginFormState extends ConsumerState<AuthLoginForm> {
   var username = '';
   String password = '';
 
+  Future<void> singInWithGoogle() async {
+    try {
+      final user = await GoogleSignInApi.login();
+      if (user == null) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sign in failed')),
+        );
+      } else {
+        if (!context.mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (ctx) => AccountPage(user: user)),
+        );
+      }
+    } catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    }
+  }
+
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -259,6 +283,10 @@ class _AuthLoginFormState extends ConsumerState<AuthLoginForm> {
                     'Login',
                     style: TextStyle(fontSize: 18),
                   ),
+          ),
+          ElevatedButton(
+            onPressed: singInWithGoogle,
+            child: const Text('Continue with Google'),
           ),
         ],
       ),
