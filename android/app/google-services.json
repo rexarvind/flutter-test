@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1053702216845",
+    "firebase_url": "https://rexwebmedia.firebaseio.com",
+    "project_id": "rexwebmedia",
+    "storage_bucket": "rexwebmedia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053702216845:android:08e3d485a8e77dd66f96c4",
+        "android_client_info": {
+          "package_name": "com.rexwebmedia.flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053702216845-v37rsfg9039o3kv56puheq646eqravef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2-3jkoPL5AcfQS0_lTUbAj57JrH1WAes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053702216845-v37rsfg9039o3kv56puheq646eqravef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

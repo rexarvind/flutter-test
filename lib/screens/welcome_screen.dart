@@ -6,6 +6,11 @@ import '../controllers/auth_controller.dart';
 import '../screens/notes_screen.dart';
 import '../screens/account_screen.dart';
 import '../screens/auth_screen.dart';
+import '../screens/settings_screen.dart';
+import '../widgets/my_bottom_app_bar.dart';
+
+import '../services/api.dart';
+
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({super.key});
@@ -21,25 +26,25 @@ class WelcomeScreen extends StatelessWidget {
           title: const Text('Demo App'),
         ),
         body: const SingleChildScrollView(
-          child: Text(''),
+          child: Text('Welcome Page'),
         ),
         drawer: Drawer(
           child: ListView(
             children: [
               UserAccountsDrawerHeader(
                 accountName: Text(
-                    _authController.isLoggedIn.value ? 'Welcome' : 'Guest'),
+                    _authController.isLoggedIn.value ? _authController.user.value.name : 'Welcome Guest'),
                 accountEmail: Text(
-                    _authController.isLoggedIn.value ? 'text@example.com' : ''),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(_authController.isLoggedIn.value
-                      ? ''
-                      : 'https://dummyimage.com/300'),
-                ),
+                    _authController.isLoggedIn.value ? _authController.user.value.email : ''),
+                // currentAccountPicture: CircleAvatar(
+                //   backgroundImage: NetworkImage(_authController.isLoggedIn.value
+                //       ? _authController.user.value.image
+                //       : 'https://dummyimage.com/300'),
+                // ),
                 decoration: const BoxDecoration(
                   color: Colors.black,
                   image: DecorationImage(
-                    image: NetworkImage('https://dummyimage.com/360x270'),
+                    image: AssetImage('images/material-banner.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -66,6 +71,10 @@ class WelcomeScreen extends StatelessWidget {
                 title: const Text('Settings'),
                 onTap: () {
                   Navigator.pop(context);
+                  Get.to(
+                    () => SettingsScreen(),
+                    preventDuplicates: true,
+                  );
                 },
               ),
               ListTile(
@@ -89,64 +98,12 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          height: 60.0,
-          padding: const EdgeInsets.only(top: 0.0, bottom: 5.0),
-          shape: const CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              IconButton(
-                onPressed: () {},
-                iconSize: 30.0,
-                tooltip: 'Home',
-                icon: const Icon(Icons.home),
-              ),
-              IconButton(
-                onPressed: () {},
-                iconSize: 30.0,
-                tooltip: 'Categories',
-                icon: const Icon(Icons.category),
-              ),
-              const SizedBox(width: 10),
-              const SizedBox(width: 10),
-              IconButton(
-                onPressed: () {
-                  Get.to(
-                    () => NotesScreen(),
-                    preventDuplicates: true,
-                  );
-                },
-                iconSize: 30.0,
-                tooltip: 'Notes',
-                icon: const Icon(Icons.sticky_note_2_sharp),
-              ),
-              IconButton(
-                onPressed: () {
-                  if (_authController.isLoggedIn.value) {
-                    Get.to(
-                      () => AccountScreen(),
-                      preventDuplicates: true,
-                    );
-                  } else {
-                    Get.to(
-                      () => AuthScreen(),
-                      preventDuplicates: true,
-                    );
-                  }
-                },
-                iconSize: 30.0,
-                tooltip: 'Account',
-                icon: const Icon(Icons.person),
-              ),
-            ],
-          ),
-        ),
+        bottomNavigationBar: MyBottomAppBar(),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+          },
           shape: const CircleBorder(),
           tooltip: 'Cart',
           child: const Icon(Icons.shopping_cart),

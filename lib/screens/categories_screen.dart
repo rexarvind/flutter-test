@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../widgets/my_bottom_app_bar.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class CategoriesScreen extends StatelessWidget {
+  const CategoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Categories'),
       ),
       body: const SingleChildScrollView(
-        child: Text('Home Page'),
+        child: Text('Categories Page'),
       ),
     );
   }

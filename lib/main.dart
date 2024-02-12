@@ -1,15 +1,31 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import './services/api.dart';
 import './screens/splash_screen.dart';
+import './services/firebase_options.dart';
+import './services/firebase_api.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+
+}
 
 void main() async {
   await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   Api.initializeInterceptors();
+  if (!kIsWeb) {
+    await FirebaseApi().setupFlutterNotifications();
+  }
   runApp(const MyApp());
 }
 
@@ -39,17 +55,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// void main() {
-//   runApp(
-//     GetMaterialApp(
-//         debugShowCheckedModeBanner: false,
-//         initialRoute: Routes.SPLASH,
-//         theme: appThemeData,
-//         defaultTransition: Transition.fade,
-//         initialBinding: SplashBinding(),
-//         getPages: AppPages.pages,
-//         home: SplashPage(),
-//     )
-//   );
-// }
