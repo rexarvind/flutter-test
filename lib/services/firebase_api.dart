@@ -47,17 +47,16 @@ class FirebaseApi {
           vapidKey:
               'BMcP2WWC5k5pY8Nqx0_-rwFK27uwU9PmLPa7KQqn5OHWxpf9rPTq0X6iVDiH4AScoy5p8DY0FgFkjGgNB6OMpOE',
         );
-        Get.snackbar('TOKEN', fCMToken.toString());
+        // Get.snackbar('TOKEN', fCMToken.toString());
       } else {
         final fCMToken = await _firebaseMessaging.getToken();
         if (fCMToken != null) {
           await GetStorage().write('fcm_android_token', fCMToken);
           authController.saveAndroidFCMToken(token: fCMToken);
         }
-        Get.snackbar('TOKEN', fCMToken.toString());
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      // Get.snackbar('Error', e.toString());
     }
   }
 

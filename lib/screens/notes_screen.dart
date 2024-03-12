@@ -7,40 +7,42 @@ import '../screens/auth_screen.dart';
 
 class NotesScreen extends StatelessWidget {
   NotesScreen({super.key});
-  final noteController = Get.put(NoteController());
+  final _noteController = Get.put(NoteController());
   final _authController = Get.put(AuthController());
 
   Future<void> _loadNotes() async {
-    await noteController.getNotes();
+    await _noteController.getNotes();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes'),
+        title: const Text('My Notes'),
+        actions: [
+          IconButton(
+            onPressed: _loadNotes,
+            icon: const Icon(Icons.refresh_rounded),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: _authController.isLoggedIn.value
-            ? RefreshIndicator(
-                onRefresh: _loadNotes,
-                triggerMode: RefreshIndicatorTriggerMode.anywhere,
-                child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: noteController.notes.length,
-                    itemBuilder: (ctx, index) {
-                      return ListTile(
-                        leading: const Icon(Icons.notes),
-                        title: Text(noteController.notes[index].name),
-                        subtitle: Text(noteController.notes[index].updatedAt),
-                        trailing: noteController.notes[index].isFavorite
-                            ? const Icon(Icons.push_pin)
-                            : null,
-                        onTap: () {},
-                      );
-                    }),
-              )
+            ? ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _noteController.notes.length,
+                itemBuilder: (ctx, index) {
+                  return ListTile(
+                    leading: const Icon(Icons.notes),
+                    title: Text(_noteController.notes[index].name),
+                    subtitle: Text(_noteController.notes[index].updatedAt),
+                    trailing: _noteController.notes[index].isFavorite
+                        ? const Icon(Icons.push_pin)
+                        : null,
+                    onTap: () {},
+                  );
+                })
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -59,3 +61,10 @@ class NotesScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+// RefreshIndicator(
+//                 onRefresh: _loadNotes,
+//                 triggerMode: RefreshIndicatorTriggerMode.anywhere,
+//                 child: 

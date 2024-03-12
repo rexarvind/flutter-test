@@ -316,18 +316,18 @@ class _AuthLoginFormState extends State<AuthLoginForm> {
                 ? const CircularProgressIndicator()
                 : const Text('Login', style: TextStyle(fontSize: 18)),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _isLoading ? null : _singInWithGoogle,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(54),
-              elevation: 4,
-            ),
-            child: const Text(
-              'Continue with Google',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
+          // const SizedBox(height: 20),
+          // ElevatedButton(
+          //   onPressed: _isLoading ? null : _singInWithGoogle,
+          //   style: ElevatedButton.styleFrom(
+          //     minimumSize: const Size.fromHeight(54),
+          //     elevation: 4,
+          //   ),
+          //   child: const Text(
+          //     'Continue with Google',
+          //     style: TextStyle(fontSize: 18),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -12,7 +12,7 @@ class CategoriesScreen extends StatelessWidget {
         title: const Text('Categories'),
       ),
       body: const SingleChildScrollView(
-        child: Text('Categories Page'),
+        child: Center(child: Text('Categories Page')),
       ),
     );
   }

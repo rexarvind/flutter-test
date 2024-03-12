@@ -63,7 +63,7 @@ class Api {
     required Map<String, dynamic> loginData,
   }) async {
     return dio.post(
-      '$baseUrl/v1/auth/login/',
+      '$baseUrl/v1/login/',
       data: jsonEncode(loginData),
     );
   }
@@ -72,7 +72,7 @@ class Api {
     required Map<String, dynamic> registerData,
   }) async {
     return dio.post(
-      '$baseUrl/v1/auth/register/',
+      '$baseUrl/v1/register/',
       data: jsonEncode(registerData),
     );
   }
@@ -80,6 +80,16 @@ class Api {
   static Future<Response> getUser({required String token}) async {
     return await dio.post('$baseUrl/v1/user/',
         data: jsonEncode({'token': token}));
+  }
+
+  static Future getUserSilently({required String token}) async {
+    final response = await http.post(Uri.parse('$baseUrl/v1/user/'),
+        body: jsonEncode({'token': token}));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      return {};
+    }
   }
 
   static saveFCMToken({
@@ -104,6 +114,7 @@ class Api {
   }
 
   static Future<Response> getNotes() async {
-    return dio.get('/testing.php');
+    return dio.get('$baseUrl/v1/notes/', queryParameters: {
+    });
   }
 }

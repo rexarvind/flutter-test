@@ -19,9 +19,6 @@ dependencies:
 
   http: ^1.1.0
   shared_preferences: ^2.2.1
-  flutter_riverpod: ^2.4.0
-  flutter_secure_storage: ^9.0.0
-  platform_device_id_v3: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -11,6 +11,7 @@ import '../widgets/my_bottom_app_bar.dart';
 
 import '../services/api.dart';
 
+import '../constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
   WelcomeScreen({super.key});
@@ -26,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
           title: const Text('Demo App'),
         ),
         body: const SingleChildScrollView(
-          child: Text('Welcome Page'),
+          child: Center(child: Text('Welcome Page')),
         ),
         drawer: Drawer(
           child: ListView(
@@ -41,10 +42,10 @@ class WelcomeScreen extends StatelessWidget {
                 //       ? _authController.user.value.image
                 //       : 'https://dummyimage.com/300'),
                 // ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.black,
                   image: DecorationImage(
-                    image: AssetImage('images/material-banner.jpg'),
+                    image: NetworkImage(kDrawerHeaderImg),
                     fit: BoxFit.cover,
                   ),
                 ),

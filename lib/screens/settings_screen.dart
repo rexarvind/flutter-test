@@ -10,15 +10,16 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
-            SwitchListTile(
-              value: true,
-              onChanged: (isChecked) {},
-              title: const Text('Gluten-free'),
-              subtitle: const Text('Only included gluten free meals'),
-            ),
+            // SwitchListTile(
+            //   value: true,
+            //   onChanged: (isChecked) {},
+            //   title: const Text(''),
+            //   subtitle: const Text('Only included gluten free meals'),
+            // ),
+            Center(child: Text('Settings Page'))
           ],
         ),
       ),

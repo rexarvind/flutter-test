@@ -27,9 +27,9 @@ class AuthController extends GetxController with BaseController {
   Future<void> redirect() async {
     var token = await GetStorage().read('auth_token');
     if (token != null) {
-      getUser(token: token);
+      await getUserSilently(token: token);
     }
-    await Future<void>.delayed(const Duration(seconds: 1));
+    // await Future<void>.delayed(const Duration(seconds: 1));
     Get.off(() => WelcomeScreen());
   }
 
@@ -78,13 +78,18 @@ class AuthController extends GetxController with BaseController {
   }
 
   Future<void> getUser({required String token}) async {
-    try {
-      var response = await Api.getUser(token: token);
-      var userResponse = UserResponse.fromJson(response.data);
+    var response = await Api.getUser(token: token);
+    var userResponse = UserResponse.fromJson(response.data);
+    user.value = userResponse.user;
+    isLoggedIn.value = true;
+  }
+
+  Future<void> getUserSilently({required String token}) async {
+    var response = await Api.getUserSilently(token: token);
+    if(response.isNotEmpty){
+      var userResponse = UserResponse.fromJson(response);
       user.value = userResponse.user;
       isLoggedIn.value = true;
-    } catch (e) {
-      // silent
     }
   }
 

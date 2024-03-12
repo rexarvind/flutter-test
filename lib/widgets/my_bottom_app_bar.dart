@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../screens/notes_screen.dart';
 import '../screens/account_screen.dart';
 import '../screens/auth_screen.dart';
-import '../screens/home_screen.dart';
 import '../screens/categories_screen.dart';
+import '../screens/shop_screen.dart';
 import '../controllers/auth_controller.dart';
 
 class MyBottomAppBar extends StatelessWidget {
@@ -25,11 +25,11 @@ class MyBottomAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              Get.to(() => HomeScreen(), preventDuplicates: true);
+              Get.to(() => ShopScreen(), preventDuplicates: true);
             },
             iconSize: 30.0,
-            tooltip: 'Home',
-            icon: const Icon(Icons.home),
+            tooltip: 'Shop',
+            icon: const Icon(Icons.storefront),
           ),
           IconButton(
             onPressed: () {
